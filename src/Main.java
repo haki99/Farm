@@ -1,3 +1,4 @@
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.scene.layout.BackgroundSize;
 public class Main extends Application{
 	
 	Stage window;
+	Player player = new Player();
 
     @Override
     public void start(Stage PrimaryStage) 
@@ -25,25 +27,30 @@ public class Main extends Application{
     	Displayer displayer = new Displayer();
     	Scene scene;
     	
-    	scene = displayer.Main_Menu(window);
-
+    	scene = displayer.Main_Menu(window, player);
+    	
         window.setOnCloseRequest((event) -> {
         	event.consume();
-        	closeProgram();
+        	displayer.closeProgram(window);
         });
         
         window.setScene(scene);
         window.centerOnScreen();
         window.setResizable(false);
+        
+        new AnimationTimer()
+        {
+            @Override
+            public void handle(long currentNanoTime) 
+            {
+            	
+            }
+        }.start();
+        
         window.show();
     }
     
     public static void main(String[] args) {
         launch(args);
-    }
-    
-    private void closeProgram() {
-    	Boolean answer = ConfirmBox.display("Vigyázat!","Biztos ki akarsz lépni?");
-    	if(answer) window.close();
     }
 }
