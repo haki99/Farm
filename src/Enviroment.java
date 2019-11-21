@@ -1,5 +1,8 @@
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -12,33 +15,235 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Enviroment {
-	public boolean draw_enviroment(Stage window) {
-		boolean siker = false;
+	public void draw_enviroment(Stage window, Scene ingame, GraphicsContext gc) {    
 		
-		Image image = new Image("Data/Pics/Enviroment/Sand/left.png");
+        window.setScene(ingame);
+        
+        Image sand = new Image("Data/Pics/Enviroment/Sand/sand.png");
+		Image sand_right = new Image("Data/Pics/Enviroment/Sand/right.png");
+		Image sand_bottom = new Image("Data/Pics/Enviroment/Sand/bottom.png");
+		Image sand_bottom_right = new Image("Data/Pics/Enviroment/Sand/bottom_right.png");
+		Image sand_bottom_small_right = new Image("Data/Pics/Enviroment/Sand/bottom_small_right.png");
+		Image boat = new Image("Data/Pics/Enviroment/Other/fishing_boat.png");
+		Image sd_left = new Image("Data/Pics/Enviroment/Sand/sand_left.png");
+		Image sd_top = new Image("Data/Pics/Enviroment/Sand/sand_top.png");
+		Image sd_top_left = new Image("Data/Pics/Enviroment/Sand/sand_top_left.png");
+		Image sd_top_left_small = new Image("Data/Pics/Enviroment/Sand/sand_top_left_small.png");
+		Image grass_middle = new Image("Data/Pics/Enviroment/Grass/grass_middle.png");
+		Image grass_left = new Image("Data/Pics/Enviroment/Grass/grass_left.png");
+		Image grass_bottom = new Image("Data/Pics/Enviroment/Grass/grass_bottom.png");
+		Image grass_bottom_left = new Image("Data/Pics/Enviroment/Grass/grass_bottom_left.png");
+		Image grass_right_inside = new Image("Data/Pics/Enviroment/Grass/grass_right_inside.png");
 		
-		ImageView lake = new ImageView();
-		lake.setImage(image);
+		Rectangle background = new Rectangle(0, 0, 1200, 800);
+		Rectangle tenger1 = new Rectangle(0, 0, 160, 256);
+		Rectangle tenger2 = new Rectangle(0, 0, 512, 160);
+	    
+	    //zöld háttér
+	    gc.setFill(Color.rgb(47, 129, 54));
+        gc.fillRect(background.getLayoutX(),      
+        		background.getLayoutY(), 
+        		background.getWidth(), 
+        		background.getHeight());
+	    
+        //tenger
+	    gc.setFill(Color.rgb(21, 108, 153));
+        gc.fillRect(tenger1.getLayoutX(),      
+        		tenger1.getLayoutY(), 
+        		tenger1.getWidth(), 
+        		tenger1.getHeight());
+        
+        gc.fillRect(tenger2.getLayoutX(),      
+        		tenger2.getLayoutY(), 
+        		tenger2.getWidth(), 
+        		tenger2.getHeight());
+        
+        //sarok homokok a tengernél
+        gc.drawImage(sand_bottom_right, 160, 256);
+        gc.drawImage(sand_bottom_right, 512, 160);
+        gc.drawImage(sand_bottom_small_right, 160, 160);
+        
+        //jobb partszakasz
+        for(int i = 0; i < 5; i++) {
+        	gc.drawImage(sand_right, 512, 0 + i * 32);
+        }
+        
+        //kicsi jobb partszakasz
+        for(int i = 0; i < 2; i++) {
+        	gc.drawImage(sand_right, 160, 192 + i * 32);
+        }
+        
+        for(int i = 0; i < 10; i++) {
+        	gc.drawImage(sand_bottom, 192 + i * 32, 160);
+        }
+        
+        //kicsi alsó partszakasz
+        for(int i = 0; i < 5; i++) {
+        	gc.drawImage(sand_bottom, 0 + i * 32, 256);
+        }
+        
+        //alsó partszakasz
+        for(int i = 0; i < 11; i++) {
+        	for(int j = 0; j < 3; j++) {
+            	gc.drawImage(sand, 192 + i * 32, 192  + j * 32);
+            }
+        }
+        
+        //part belsõ szakaszok
+        for(int i = 0; i < 9; i++) {
+        	gc.drawImage(sand, 544, 0 + i * 32);
+        }
+        
+        for(int i = 0; i < 8; i++) {
+        	gc.drawImage(sand, 576, 0 + i * 32);
+        }
+        
+        for(int i = 0; i < 7; i++) {
+        	gc.drawImage(sand, 608, 0 + i * 32);
+        }
+        
+        
+        for(int i = 0; i < 12; i++) {
+        	gc.drawImage(sand, 0 + i * 32, 288);
+        }
+        
+        for(int i = 0; i < 8; i++) {
+        	gc.drawImage(sand, 0 + i * 32, 320);
+        }
+        
+        
+        //hajó
+        gc.drawImage(boat, 64, 64);
+        
+        //homok-fû határ
+        for(int i = 0; i < 7; i++) {
+        	gc.drawImage(sd_left, 640, 0 + i * 32);
+        }
+        
+        for(int i = 0; i < 8; i++) {
+        	gc.drawImage(sd_top, 0 + i * 32, 352);
+        }
+        
+        for(int i = 0; i < 3; i++) {
+        	gc.drawImage(sd_top, 288 + i * 32, 320);
+        }
+        
+        for(int i = 0; i < 5; i++) {
+        	gc.drawImage(sd_top, 416 + i * 32, 288);
+        }
+        
+        gc.drawImage(sd_top_left, 384, 288);
+        gc.drawImage(sd_top_left, 256, 320);
+        gc.drawImage(sd_top_left_small, 256, 352);
+        gc.drawImage(sd_top_left_small, 384, 320);
+        gc.drawImage(sd_top_left_small, 576, 288);
+        gc.drawImage(sd_top_left, 576, 256);
+        gc.drawImage(sd_top_left_small, 608, 256);
+        gc.drawImage(sd_top_left, 608, 224);
+        gc.drawImage(sd_top_left_small, 640, 224);
+        
+        //Fû
+        for(int i = 0; i < 8; i++) {
+        	for(int j = 0; j < 10; j++) {
+        		gc.drawImage(grass_middle, 960 + i * 32, 0 + j * 32);
+        	}
+        }
+        
+        for(int i = 0; i < 5; i++) {
+        	for(int j = 0; j < 4; j++) {
+        		gc.drawImage(grass_middle, 1056 + i * 32, 320 + j * 32);
+        	}
+        }
+        
+        for(int i = 0; i < 3; i++) {
+        	for(int j = 0; j < 2; j++) {
+        		gc.drawImage(grass_middle, 1120 + i * 32, 448 + j * 32);
+        	}
+        }
+        
+        for(int i = 0; i < 10; i++) {
+        	gc.drawImage(grass_left, 928, 0 + i * 32);
+        }
+        
+        gc.drawImage(grass_right_inside, 1088, 448);
+
+        gc.drawImage(grass_left, 1088, 480);
+
+        gc.drawImage(grass_right_inside, 1024, 320);
+        
+        for(int i = 0; i < 3; i++) {
+        	gc.drawImage(grass_left, 1024, 352 + i * 32);
+        }
+        
+        for(int i = 0; i < 10; i++) {
+        	gc.drawImage(grass_bottom, 1120 + i * 32, 512);
+        }
+        
+        gc.drawImage(grass_bottom, 1056, 448);
+        
+        for(int i = 0; i < 2; i++) {
+        	gc.drawImage(grass_bottom, 960 + i * 32, 320);
+        }
+        
+        gc.drawImage(grass_bottom_left, 928, 320);
+        gc.drawImage(grass_bottom_left, 1024, 448);
+        gc.drawImage(grass_bottom_left, 1088, 512);
+        
+	    window.show();
+	}
+	
+	public void draw_garden(Stage window, Player player, Scene ingame, GraphicsContext gc) {
+		Image soil_top_left = new Image("Data/Pics/Enviroment/Garden/soil_top_left.png");
+		Image soil_top_right = new Image("Data/Pics/Enviroment/Garden/soil_top_right.png");
+		Image soil_bottom_left = new Image("Data/Pics/Enviroment/Garden/soil_bottom_left.png");
+		Image soil_bottom_right = new Image("Data/Pics/Enviroment/Garden/soil_bottom_right.png");
+		Image soil_top = new Image("Data/Pics/Enviroment/Garden/soil_top.png");
+		Image soil_bottom = new Image("Data/Pics/Enviroment/Garden/soil_bottom.png");
+		Image soil_left = new Image("Data/Pics/Enviroment/Garden/soil_left.png");
+		Image soil_right = new Image("Data/Pics/Enviroment/Garden/soil_right.png");
+		Image soil = new Image("Data/Pics/Enviroment/Garden/soil_line.png");
 		
-		Rectangle tenger = new Rectangle(0, 0, 32, 32);
-		tenger.setFill(Color.rgb(21, 108, 153));
+		int x = 0;
+		int y = 0;
 		
-		/*HBox box = new HBox();
-        box.getChildren().addAll(lake, tenger);
-        box.setBackground(new Background(new BackgroundFill(Color.rgb(47, 129, 54), CornerRadii.EMPTY, Insets.EMPTY)));*/
-		
-		GridPane gamelayout = new GridPane();
-		
-		for(int i = 0; i < 32; i++) {
-			gamelayout.add(tenger, i, 0);
+		switch(player.getdiff()) {
+			case 1: x = 5; y = 5; break;
+			case 2: x = 8; y = 10; break;
+			case 3: x = 8; y = 20; break;
 		}
 		
-		//gamelayout.add(lake, 1, 0);
-        
-        Scene sgame = new Scene(gamelayout, 1200, 800);
-        
-        window.setScene(sgame);
+		//Bal felsõ blokk
+		gc.drawImage(soil_top_left, 224, 416);
 		
-		return siker;
+		//Jobb felsõ blokk
+		gc.drawImage(soil_top_right, 256 + y * 32, 416);
+		
+		//Bal alsó blokk
+		gc.drawImage(soil_bottom_left, 224, 448 + x * 32);
+		
+		//Jobb alsó blokk
+		gc.drawImage(soil_bottom_right, 256 + y * 32, 448 + x * 32);
+		
+		for(int i = 0; i < y; i++) {
+			gc.drawImage(soil_top, 256 + i * 32, 416);
+		}
+		
+		for(int i = 0; i < y; i++) {
+			gc.drawImage(soil_bottom, 256 + i * 32, 448 + x * 32);
+		}
+		
+		for(int j = 0; j < x; j++) {
+			gc.drawImage(soil_left, 224, 448 + j * 32);
+		}
+		
+		for(int j = 0; j < x; j++) {
+			gc.drawImage(soil_right, 256 + y * 32, 448 + j * 32);
+		}
+
+		for(int i = 0; i < y; i++) {
+			for(int j = 0; j < x; j++) {
+				gc.drawImage(soil, 256 + i * 32, 448 + j * 32);
+			}
+		}
 	}
 }

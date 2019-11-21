@@ -17,40 +17,30 @@ public class Main extends Application{
 	
 	Stage window;
 	Player player = new Player();
+	Image traktor = new Image("Data/Pics/traktor.gif");
+    
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage PrimaryStage) 
     {
     	window = PrimaryStage;
     	window.setTitle("Farm");
+    	window.getIcons().add(traktor);
+    	
+        window.centerOnScreen();
+        window.setMaxHeight(800);
+        window.setMaxWidth(1200);
     	
     	Displayer displayer = new Displayer();
-    	Scene scene;
     	
-    	scene = displayer.Main_Menu(window, player);
+    	displayer.Main_Menu(window, player);
     	
         window.setOnCloseRequest((event) -> {
         	event.consume();
         	displayer.closeProgram(window);
         });
-        
-        window.setScene(scene);
-        window.centerOnScreen();
-        window.setResizable(false);
-        
-        new AnimationTimer()
-        {
-            @Override
-            public void handle(long currentNanoTime) 
-            {
-            	
-            }
-        }.start();
-        
-        window.show();
-    }
-    
-    public static void main(String[] args) {
-        launch(args);
     }
 }

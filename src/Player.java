@@ -7,4 +7,12 @@ public class Player {
 		name = n;
 		diff = d;
 	}
+	
+	public int getdiff() {
+		return diff;
+	}
+	
+	public String getname() {
+		return name;
+	}
 }

@@ -3,7 +3,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -26,7 +29,7 @@ import javafx.scene.layout.StackPane;
 
 public class Displayer {
 
-	public Scene Main_Menu(Stage window, Player player) {
+	public void Main_Menu(Stage window, Player player) {
     	
 		Button Bplay = new Button("Play");
     	Button Bexit = new Button("Exit");
@@ -38,6 +41,7 @@ public class Displayer {
 		});
 		
     	Bexit.setOnAction((event) -> {
+    		event.consume();
     		closeProgram(window);
     	});
 		
@@ -58,7 +62,8 @@ public class Displayer {
         
         Scene main_menu = new Scene(main, 1200, 800);
         
-        return main_menu;
+        window.setScene(main_menu);
+        window.show();
 	}
 	
 	public void closeProgram(Stage window) {
@@ -74,11 +79,11 @@ public class Displayer {
 		TextField textField = new TextField ();
 		textField.setMaxWidth(200);
 		
-		Button Bexit = new Button("Exit");
+		Button Bback = new Button("Back");
 		Button Bstart = new Button("Start");
 		
-		Bexit.setOnAction((event) -> {
-    		closeProgram(window);
+		Bback.setOnAction((event) -> {
+			Main_Menu(window,player);
     	});
 		
 		Bstart.setOnAction((event) -> {  	
@@ -104,7 +109,7 @@ public class Displayer {
 		setup_game.add(textField, 1, 0);
 		setup_game.add(diff_ch, 1, 1);
 		setup_game.add(Bstart, 1, 2);
-		setup_game.add(Bexit, 1, 3);
+		setup_game.add(Bback, 1, 3);
 		
 		BackgroundSize bsize = new BackgroundSize(1504, 1000, false, false, false, false);
     	
@@ -120,7 +125,16 @@ public class Displayer {
 	public void Game_display(Stage window, Player player) {
 		Enviroment enviroment  = new Enviroment();
 		
-		enviroment.draw_enviroment(window);
+		Group root = new Group();
+        Scene ingame = new Scene(root, 1200, 800);
+        
+        Canvas canvas = new Canvas(1200, 800);
+	    root.getChildren().add(canvas);
+	    GraphicsContext gc = canvas.getGraphicsContext2D();
+		
+		enviroment.draw_enviroment(window, ingame, gc);
+		
+		enviroment.draw_garden(window, player, ingame, gc);
 		
         window.show();
 	}
