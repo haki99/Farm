@@ -123,18 +123,33 @@ public class Displayer {
 	}
 	
 	public void Game_display(Stage window, Player player) {
-		Enviroment enviroment  = new Enviroment();
+		int x = 0;
+		int y = 0;
+		
+		switch(player.getdiff()) {
+			case 1: x = 5; y = 5; break;
+			case 2: x = 10; y = 8; break;
+			case 3: x = 20; y = 8; break;
+		}
 		
 		Group root = new Group();
-        Scene ingame = new Scene(root, 1200, 800);
         
         Canvas canvas = new Canvas(1200, 800);
-	    root.getChildren().add(canvas);
+
 	    GraphicsContext gc = canvas.getGraphicsContext2D();
+	    
+	    Enviroment enviroment  = new Enviroment();
+		enviroment.draw_enviroment(window, gc);	
+		enviroment.draw_garden(window, player, gc, x, y);
 		
-		enviroment.draw_enviroment(window, ingame, gc);
+		Controller controller = new Controller();
 		
-		enviroment.draw_garden(window, player, ingame, gc);
+		GridPane kert = controller.garden(player, x, y, enviroment, window, gc, root, canvas);
+		
+		root.getChildren().addAll(canvas,kert);
+		
+        Scene ingame = new Scene(root,1200, 800);
+        window.setScene(ingame);
 		
         window.show();
 	}

@@ -15,9 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Enviroment {
-	public void draw_enviroment(Stage window, Scene ingame, GraphicsContext gc) {    
-		
-        window.setScene(ingame);
+	public void draw_enviroment(Stage window, GraphicsContext gc) {    
         
         Image sand = new Image("Data/Pics/Enviroment/Sand/sand.png");
 		Image sand_right = new Image("Data/Pics/Enviroment/Sand/right.png");
@@ -192,7 +190,7 @@ public class Enviroment {
 	    window.show();
 	}
 	
-	public void draw_garden(Stage window, Player player, Scene ingame, GraphicsContext gc) {
+	public void draw_garden(Stage window, Player player, GraphicsContext gc, int x, int y) {
 		Image soil_top_left = new Image("Data/Pics/Enviroment/Garden/soil_top_left.png");
 		Image soil_top_right = new Image("Data/Pics/Enviroment/Garden/soil_top_right.png");
 		Image soil_bottom_left = new Image("Data/Pics/Enviroment/Garden/soil_bottom_left.png");
@@ -202,48 +200,61 @@ public class Enviroment {
 		Image soil_left = new Image("Data/Pics/Enviroment/Garden/soil_left.png");
 		Image soil_right = new Image("Data/Pics/Enviroment/Garden/soil_right.png");
 		Image soil = new Image("Data/Pics/Enviroment/Garden/soil_line.png");
-		
-		int x = 0;
-		int y = 0;
-		
-		switch(player.getdiff()) {
-			case 1: x = 5; y = 5; break;
-			case 2: x = 8; y = 10; break;
-			case 3: x = 8; y = 20; break;
-		}
+		Image hole = new Image("Data/Pics/Enviroment/Garden/hole.png");
 		
 		//Bal felsõ blokk
 		gc.drawImage(soil_top_left, 224, 416);
 		
 		//Jobb felsõ blokk
-		gc.drawImage(soil_top_right, 256 + y * 32, 416);
+		gc.drawImage(soil_top_right, 256 + x * 32, 416);
 		
 		//Bal alsó blokk
-		gc.drawImage(soil_bottom_left, 224, 448 + x * 32);
+		gc.drawImage(soil_bottom_left, 224, 448 + y * 32);
 		
 		//Jobb alsó blokk
-		gc.drawImage(soil_bottom_right, 256 + y * 32, 448 + x * 32);
+		gc.drawImage(soil_bottom_right, 256 + x * 32, 448 + y * 32);
 		
-		for(int i = 0; i < y; i++) {
+		for(int i = 0; i < x; i++) {
 			gc.drawImage(soil_top, 256 + i * 32, 416);
 		}
 		
-		for(int i = 0; i < y; i++) {
-			gc.drawImage(soil_bottom, 256 + i * 32, 448 + x * 32);
+		for(int i = 0; i < x; i++) {
+			gc.drawImage(soil_bottom, 256 + i * 32, 448 + y * 32);
 		}
 		
-		for(int j = 0; j < x; j++) {
+		for(int j = 0; j < y; j++) {
 			gc.drawImage(soil_left, 224, 448 + j * 32);
 		}
 		
-		for(int j = 0; j < x; j++) {
-			gc.drawImage(soil_right, 256 + y * 32, 448 + j * 32);
+		for(int j = 0; j < y; j++) {
+			gc.drawImage(soil_right, 256 + x * 32, 448 + j * 32);
 		}
 
-		for(int i = 0; i < y; i++) {
-			for(int j = 0; j < x; j++) {
+		for(int i = 0; i < x; i++) {
+			for(int j = 0; j < y; j++) {
 				gc.drawImage(soil, 256 + i * 32, 448 + j * 32);
+				gc.drawImage(hole, 257 + i * 32, 413 + j * 32);
 			}
 		}
+	}
+	
+	public void draw_plant(Stage window, GraphicsContext gc, int a, int b, String type, Group root, Canvas canvas) {
+		String url = "";
+		switch(type) {
+			case "paradicsom": url = "Data/Pics/Enviroment/Garden/Plants/paradicsom1.png"; break;
+			//extend here
+			default: break;
+		}
+		
+		//0,0-ra alakítva a mátrix kezdése
+		a -= 8;
+		b -= 14;
+		
+		Image plant = new Image(url);
+		
+		//Elso palanta koordinatai: 258, 408
+		gc.drawImage(plant, 258 + a * 32, 408 + b * 32);
+		
+        window.show();
 	}
 }
