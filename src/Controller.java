@@ -59,7 +59,7 @@ public class Controller {
                 		
                 			Plant p = new Plant("paradicsom", 5, 4);
                 		
-                			player.add_plant(p, u, z);
+                			player.add_plant(p, z, u);
                 		});
             		}
             		else {

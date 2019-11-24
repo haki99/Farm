@@ -1,9 +1,10 @@
+import java.util.ArrayList;
 import javafx.stage.Stage;
 
 public class Player {
 	private String name;
 	private int diff;
-	private Plant[][] garden_matrix;
+	ArrayList<ArrayList<Plant>> garden_matrix; 
 	private int a;
 	private int b;
 	
@@ -12,11 +13,12 @@ public class Player {
 		diff = d;
 		a = y;
 		b = x;
-		garden_matrix = new Plant[a][b];
+		garden_matrix = new ArrayList<ArrayList<Plant>>(); 
 		
 		for(int i = 0; i < a; i++) {
+			garden_matrix.add(new ArrayList<Plant>() );
 			for(int j = 0; j < b; j++) {
-				garden_matrix[i][j] = null;
+				garden_matrix.get(i).add(null);
 			}
 		}
 	}
@@ -30,24 +32,24 @@ public class Player {
 	}
 	
 	public Plant get_plant(int i, int j) {
-		return garden_matrix[i][j];
+		return garden_matrix.get(i).get(j);
 	}
 	
 	public void remove_plant(int i, int j) {
-		garden_matrix[i][j] = null;
+		garden_matrix.get(i).set(j, null);
 	}
 	
 	public void add_plant(Plant p, int i, int j) {
-		garden_matrix[j][i] = p;
+		garden_matrix.get(i).set(j, p);
 	}
 	
-	//test
 	public void grow_plants() {
 		for(int i = 0; i < a; i++) {
 			for(int j = 0; j < b; j++) {
-				if(garden_matrix[i][j] != null) {
+				if(garden_matrix.get(i).get(j) != null) {
 					if(this.get_plant(i, j).get_growth_level() < this.get_plant(i, j).get_maxgrowth()) {
 						this.get_plant(i, j).grow();
+						//for tests
 						//this.write_array();
 					}
 				}
@@ -58,7 +60,7 @@ public class Player {
 	public void check_grow(Stage window, Enviroment e) {
 		for(int i = 0; i < a; i++) {
 			for(int j = 0; j < b; j++) {
-				if(garden_matrix[i][j] != null) {
+				if(garden_matrix.get(i).get(j) != null) {
 					if(this.get_plant(i, j).get_growth_level() < this.get_plant(i, j).get_maxgrowth()) {
 						if(this.get_plant(i, j).get_growth() >= this.get_plant(i, j).get_grow_time()) {
 							
@@ -82,14 +84,15 @@ public class Player {
 		}
 	}
 	
-	//test
+	//for tests
 	public void write_array() {
 		for(int i = 0; i < a; i++) {
 			for(int j = 0; j < b; j++) {
-				if(garden_matrix[i][j] != null) System.out.print("[" + garden_matrix[i][j].get_growth() + "]");
+				if(garden_matrix.get(i).get(j) != null) System.out.print("[" + garden_matrix.get(i).get(j).get_growth() + "]");
 				else  System.out.print("[" + "]");
 			}
 			System.out.println();
 		}
+		System.out.println();
 	}
 }
