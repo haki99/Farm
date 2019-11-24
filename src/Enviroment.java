@@ -1,21 +1,30 @@
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Enviroment {
-	public void draw_enviroment(Stage window, GraphicsContext gc) {    
+	private GraphicsContext gc;
+	private Canvas canvas;
+	private Group root;
+	
+	public void initialize(Stage window) {
+		root = new Group();
+        canvas = new Canvas(1200, 800);
+	    gc = canvas.getGraphicsContext2D();
+	    
+	    root.getChildren().addAll(canvas);
+	    
+		Scene ingame = new Scene(root,1200, 800);
+        window.setScene(ingame);
+	}
+	
+	public void draw_enviroment(Stage window) {    
         
         Image sand = new Image("Data/Pics/Enviroment/Sand/sand.png");
 		Image sand_right = new Image("Data/Pics/Enviroment/Sand/right.png");
@@ -190,7 +199,7 @@ public class Enviroment {
 	    window.show();
 	}
 	
-	public void draw_garden(Stage window, Player player, GraphicsContext gc, int x, int y) {
+	public void draw_garden(Stage window, Player player, int x, int y) {
 		Image soil_top_left = new Image("Data/Pics/Enviroment/Garden/soil_top_left.png");
 		Image soil_top_right = new Image("Data/Pics/Enviroment/Garden/soil_top_right.png");
 		Image soil_bottom_left = new Image("Data/Pics/Enviroment/Garden/soil_bottom_left.png");
@@ -238,7 +247,7 @@ public class Enviroment {
 		}
 	}
 	
-	public void draw_plant(Stage window, GraphicsContext gc, int a, int b, String type, Group root, Canvas canvas) {
+	public void draw_plant(Stage window, int a, int b, String type) {
 		String url = "";
 		switch(type) {
 			case "paradicsom": url = "Data/Pics/Enviroment/Garden/Plants/paradicsom1.png"; break;
@@ -256,5 +265,13 @@ public class Enviroment {
 		gc.drawImage(plant, 258 + a * 32, 408 + b * 32);
 		
         window.show();
+	}
+	
+	public void smart_garden(Player player, int x, int y, Enviroment enviroment, Stage window) {
+		Controller controller = new Controller();
+		GridPane kert = controller.garden(player, x, y, enviroment, window, gc, root, canvas);
+		root.getChildren().addAll(kert);
+		
+		controller.growcycle(player, y, x);
 	}
 }

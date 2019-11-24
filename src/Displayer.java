@@ -1,48 +1,59 @@
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 public class Displayer {
+	private Stage window;
+	
+	public void initialize(Stage PrimaryStage) {
+		Image traktor = new Image("Data/Pics/traktor.gif");
+		
+		window = PrimaryStage;
+    	window.setTitle("Farm");
+    	window.getIcons().add(traktor);
+    	
+    	window.centerOnScreen();
+        window.setMaxHeight(800);
+        window.setMaxWidth(1200);
+        
+        window.setOnCloseRequest((event) -> {
+        	event.consume();
+        	closeProgram();
+        });
+	}
 
-	public void Main_Menu(Stage window, Player player) {
+	public void Main_Menu(Player player) {
     	
 		Button Bplay = new Button("Play");
     	Button Bexit = new Button("Exit");
 		
 		Bplay.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){
-                window.setScene(Setup_Game(window, player));
+                window.setScene(Setup_Game(player));
           }
 		});
 		
     	Bexit.setOnAction((event) -> {
     		event.consume();
-    		closeProgram(window);
+    		closeProgram();
     	});
 		
     	VBox vbox = new VBox(5);
@@ -66,12 +77,12 @@ public class Displayer {
         window.show();
 	}
 	
-	public void closeProgram(Stage window) {
+	public void closeProgram() {
     	Boolean answer = ConfirmBox.display("Vigyázat!","Biztos ki akarsz lépni?");
     	if(answer) window.close();
     }
 	
-	public Scene Setup_Game(Stage window, Player player) {
+	public Scene Setup_Game(Player player) {
 		ObservableList<String> difficulty = FXCollections.observableArrayList("Könnyû","Közepes","Nehéz");	
 		ComboBox<String> diff_ch = new ComboBox<String>(difficulty);
 		
@@ -83,20 +94,22 @@ public class Displayer {
 		Button Bstart = new Button("Start");
 		
 		Bback.setOnAction((event) -> {
-			Main_Menu(window,player);
+			Main_Menu(player);
     	});
 		
 		Bstart.setOnAction((event) -> {  	
 			int x = 0;
+			int a = 0;
+			int b = 0;
 			switch(diff_ch.getValue()) {
-				case "Könnyû": x = 1; break;
-				case "Közepes": x = 2; break;
-				case "Nehéz": x = 3; break;
+				case "Könnyû": x = 1; a = 5; b = 5; break;
+				case "Közepes": x = 2; a = 10; b = 8;  break;
+				case "Nehéz": x = 3; a = 20; b = 8;  break;
 				default: break;
 			}
 			
-        	player.set_data(textField.getText(), x);
-    		Game_display(window, player);
+        	player.set_data(textField.getText(), x, a, b);
+    		Game_display(player);
     	});
 		
 		GridPane setup_game = new GridPane ();
@@ -122,7 +135,7 @@ public class Displayer {
 		return sgame;
 	}
 	
-	public void Game_display(Stage window, Player player) {
+	public void Game_display(Player player) {
 		int x = 0;
 		int y = 0;
 		
@@ -132,25 +145,10 @@ public class Displayer {
 			case 3: x = 20; y = 8; break;
 		}
 		
-		Group root = new Group();
-        
-        Canvas canvas = new Canvas(1200, 800);
-
-	    GraphicsContext gc = canvas.getGraphicsContext2D();
-	    
 	    Enviroment enviroment  = new Enviroment();
-		enviroment.draw_enviroment(window, gc);	
-		enviroment.draw_garden(window, player, gc, x, y);
-		
-		Controller controller = new Controller();
-		
-		GridPane kert = controller.garden(player, x, y, enviroment, window, gc, root, canvas);
-		
-		root.getChildren().addAll(canvas,kert);
-		
-        Scene ingame = new Scene(root,1200, 800);
-        window.setScene(ingame);
-		
-        window.show();
+	    enviroment.initialize(window);
+		enviroment.draw_enviroment(window);	
+		enviroment.draw_garden(window, player, x, y);
+		enviroment.smart_garden(player, x, y, enviroment, window);
 	}
 }
