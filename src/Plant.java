@@ -1,5 +1,11 @@
+import java.io.Serializable;
 
-public class Plant {
+public class Plant implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private int growth;
 	private int grow_time;
@@ -44,5 +50,10 @@ public class Plant {
 	
 	public void grow() {
 		growth += 1;
+	}
+	
+	@Override
+    public String toString() {
+		return name + " " + growth + " " + grow_time + " " + growth_level + " " + max_growth;
 	}
 }

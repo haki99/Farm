@@ -34,7 +34,7 @@ public class Controller {
 	     }
 		
 		ContextMenu menu = new ContextMenu();
-        MenuItem par_ultetes_menu = new MenuItem("Ültetés");
+        MenuItem par_ultetes_menu = new MenuItem("Paradicsom ültetés");
         MenuItem aratas = new MenuItem("Aratás");
         menu.getItems().addAll(par_ultetes_menu, aratas);
 		
@@ -62,7 +62,7 @@ public class Controller {
                 			player.add_plant(p, z, u);
                 		});
             		}
-            		else {
+            		else if(player.get_plant(z, u).get_growth_level() == player.get_plant(z, u).get_maxgrowth()){
             			aratas.setOnAction(evt -> {
             				evt.consume();
             				

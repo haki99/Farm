@@ -1,7 +1,16 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import javafx.stage.Stage;
 
-public class Player {
+public class Player implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private int diff;
 	ArrayList<ArrayList<Plant>> garden_matrix; 
@@ -81,6 +90,19 @@ public class Player {
 					}
 				}
 			}
+		}
+	}
+	
+	public void save() {
+		try {
+			FileOutputStream fos = new FileOutputStream("farm_save");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(this);
+            oos.close();
+            fos.close();
+		}
+		catch (IOException ioe){
+			ioe.printStackTrace();
 		}
 	}
 	

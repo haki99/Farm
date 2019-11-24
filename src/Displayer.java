@@ -1,3 +1,8 @@
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +28,7 @@ import javafx.scene.layout.StackPane;
 public class Displayer {
 	private Stage window;
 	
-	public void initialize(Stage PrimaryStage) {
+	public void initialize(Stage PrimaryStage, Player player) {
 		Image traktor = new Image("Data/Pics/traktor.gif");
 		
 		window = PrimaryStage;
@@ -36,6 +41,7 @@ public class Displayer {
         
         window.setOnCloseRequest((event) -> {
         	event.consume();
+        	player.save();
         	closeProgram();
         });
 	}
@@ -43,11 +49,18 @@ public class Displayer {
 	public void Main_Menu(Player player) {
     	
 		Button Bplay = new Button("Play");
+		Button Bload = new Button("Load");
     	Button Bexit = new Button("Exit");
 		
 		Bplay.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){
                 window.setScene(Setup_Game(player));
+          }
+		});
+		
+		Bload.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent t){
+            	load(player);
           }
 		});
 		
@@ -57,7 +70,7 @@ public class Displayer {
     	});
 		
     	VBox vbox = new VBox(5);
-    	vbox.getChildren().addAll(Bplay, Bexit);
+    	vbox.getChildren().addAll(Bplay, Bload, Bexit);
     	
     	StackPane main = new StackPane ();
     	main.setPrefSize(1200, 800);
@@ -75,6 +88,50 @@ public class Displayer {
         
         window.setScene(main_menu);
         window.show();
+	}
+	
+	public void load(Player player) {
+		try
+        {
+            FileInputStream fis = new FileInputStream("farm_save");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+ 
+            player = (Player) ois.readObject();
+ 
+            ois.close();
+            fis.close();
+        } 
+        catch (IOException ioe) 
+        {
+            ioe.printStackTrace();
+            return;
+        } 
+        catch (ClassNotFoundException c) 
+        {
+            System.out.println("Class not found");
+            c.printStackTrace();
+            return;
+        }
+		
+		System.out.println(player.getname());
+		System.out.println(player.getdiff());
+		player.write_array();
+		
+		int x = 0;
+		int y = 0;
+		
+		switch(player.getdiff()) {
+			case 1: x = 5; y = 5; break;
+			case 2: x = 10; y = 8; break;
+			case 3: x = 20; y = 8; break;
+		}
+		
+	    Enviroment enviroment  = new Enviroment();
+	    enviroment.initialize(window);
+		enviroment.draw_enviroment(window);	
+		enviroment.draw_soil(window, player, x, y);
+		enviroment.smart_garden(player, x, y, enviroment, window);
+		enviroment.draw_garden(window, player);
 	}
 	
 	public void closeProgram() {
