@@ -3,11 +3,15 @@ public class Plant {
 	private String name;
 	private int growth;
 	private int grow_time;
+	private int growth_level;
+	private int max_growth;
 	
-	public Plant(String n, int t) {
+	public Plant(String n, int t, int u) {
 		name = n;
-		growth = 0;
 		grow_time = t;
+		max_growth = u;
+		growth = 0;
+		growth_level = 1;
 	}
 	
 	public String get_name() {
@@ -20,6 +24,22 @@ public class Plant {
 	
 	public int get_growth() {
 		return growth;
+	}
+	
+	public int get_maxgrowth() {
+		return max_growth;
+	}
+	
+	public int get_growth_level() {
+		return growth_level;
+	}
+	
+	public void incr_growthlevel() {
+		growth_level += 1;
+	}
+	
+	public void erase_growth() {
+		growth = 0;
 	}
 	
 	public void grow() {

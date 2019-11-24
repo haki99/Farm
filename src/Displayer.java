@@ -148,7 +148,7 @@ public class Displayer {
 	    Enviroment enviroment  = new Enviroment();
 	    enviroment.initialize(window);
 		enviroment.draw_enviroment(window);	
-		enviroment.draw_garden(window, player, x, y);
+		enviroment.draw_soil(window, player, x, y);
 		enviroment.smart_garden(player, x, y, enviroment, window);
 	}
 }
