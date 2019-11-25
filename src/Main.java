@@ -16,6 +16,6 @@ public class Main extends Application{
     	
     	displayer.initialize(PrimaryStage, player);
     	
-    	displayer.Main_Menu(player);
+    	displayer.Main_Menu();
     }
 }

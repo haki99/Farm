@@ -21,7 +21,9 @@ public class Controller {
 		y += 14;
 
 		GridPane kert = new GridPane();
-		kert.setGridLinesVisible(true);
+		
+		//segéd mátrix
+		kert.setGridLinesVisible(false);
 		
 		for (int i = 0; i < 37; i++) {
 	         ColumnConstraints column = new ColumnConstraints(32);

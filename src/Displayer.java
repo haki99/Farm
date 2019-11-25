@@ -1,8 +1,6 @@
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,10 +25,12 @@ import javafx.scene.layout.StackPane;
 
 public class Displayer {
 	private Stage window;
+	private Player player;
 	
-	public void initialize(Stage PrimaryStage, Player player) {
+	public void initialize(Stage PrimaryStage, Player p) {
 		Image traktor = new Image("Data/Pics/traktor.gif");
 		
+		player = p;
 		window = PrimaryStage;
     	window.setTitle("Farm");
     	window.getIcons().add(traktor);
@@ -46,26 +46,27 @@ public class Displayer {
         });
 	}
 
-	public void Main_Menu(Player player) {
+	public void Main_Menu() {
     	
-		Button Bplay = new Button("Play");
-		Button Bload = new Button("Load");
-    	Button Bexit = new Button("Exit");
+		Button Bplay = new Button("Játék");
+		Button Bload = new Button("Betöltés");
+    	Button Bexit = new Button("Kilépés");
 		
 		Bplay.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){
-                window.setScene(Setup_Game(player));
+                window.setScene(Setup_Game());
           }
 		});
 		
 		Bload.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){
-            	load(player);
+            	load();
           }
 		});
 		
     	Bexit.setOnAction((event) -> {
     		event.consume();
+    		player.save();
     		closeProgram();
     	});
 		
@@ -90,7 +91,7 @@ public class Displayer {
         window.show();
 	}
 	
-	public void load(Player player) {
+	public void load() {
 		try
         {
             FileInputStream fis = new FileInputStream("farm_save");
@@ -113,10 +114,6 @@ public class Displayer {
             return;
         }
 		
-		System.out.println(player.getname());
-		System.out.println(player.getdiff());
-		player.write_array();
-		
 		int x = 0;
 		int y = 0;
 		
@@ -135,23 +132,24 @@ public class Displayer {
 	}
 	
 	public void closeProgram() {
-    	Boolean answer = ConfirmBox.display("Vigyázat!","Biztos ki akarsz lépni?");
+    	Boolean answer = ConfirmBox.display("Vigyázat!", "Biztos ki akarsz lépni? \nA játékállás mentésre kerül.");
+    	player.save();
     	if(answer) window.close();
     }
 	
-	public Scene Setup_Game(Player player) {
+	public Scene Setup_Game() {
 		ObservableList<String> difficulty = FXCollections.observableArrayList("Könnyû","Közepes","Nehéz");	
 		ComboBox<String> diff_ch = new ComboBox<String>(difficulty);
 		
-		Label label1 = new Label("Name:");
+		Label label1 = new Label("Név:");
 		TextField textField = new TextField ();
 		textField.setMaxWidth(200);
 		
-		Button Bback = new Button("Back");
-		Button Bstart = new Button("Start");
+		Button Bback = new Button("Vissza");
+		Button Bstart = new Button("Játék");
 		
 		Bback.setOnAction((event) -> {
-			Main_Menu(player);
+			Main_Menu();
     	});
 		
 		Bstart.setOnAction((event) -> {  	
@@ -166,7 +164,7 @@ public class Displayer {
 			}
 			
         	player.set_data(textField.getText(), x, a, b);
-    		Game_display(player);
+    		Game_display();
     	});
 		
 		GridPane setup_game = new GridPane ();
@@ -192,7 +190,7 @@ public class Displayer {
 		return sgame;
 	}
 	
-	public void Game_display(Player player) {
+	public void Game_display() {
 		int x = 0;
 		int y = 0;
 		
