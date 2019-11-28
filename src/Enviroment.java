@@ -199,7 +199,7 @@ public class Enviroment {
 	    window.show();
 	}
 	
-	public void draw_garden(Stage window, Player player, int x, int y) {
+	public void draw_soil(Stage window, Player player, int x, int y) {
 		Image soil_top_left = new Image("Data/Pics/Enviroment/Garden/soil_top_left.png");
 		Image soil_top_right = new Image("Data/Pics/Enviroment/Garden/soil_top_right.png");
 		Image soil_bottom_left = new Image("Data/Pics/Enviroment/Garden/soil_bottom_left.png");
@@ -250,7 +250,10 @@ public class Enviroment {
 	public void draw_plant(Stage window, int a, int b, String type) {
 		String url = "";
 		switch(type) {
-			case "paradicsom": url = "Data/Pics/Enviroment/Garden/Plants/paradicsom1.png"; break;
+			case "paradicsom1": url = "Data/Pics/Enviroment/Garden/Plants/paradicsom1.png"; break;
+			case "paradicsom2": url = "Data/Pics/Enviroment/Garden/Plants/paradicsom2.png"; break;
+			case "paradicsom3": url = "Data/Pics/Enviroment/Garden/Plants/paradicsom3.png"; break;
+			case "paradicsom4": url = "Data/Pics/Enviroment/Garden/Plants/paradicsom4.png"; break;
 			//extend here
 			default: break;
 		}
@@ -272,6 +275,25 @@ public class Enviroment {
 		GridPane kert = controller.garden(player, x, y, enviroment, window, gc, root, canvas);
 		root.getChildren().addAll(kert);
 		
-		controller.growcycle(player, y, x);
+		controller.growcycle(player, window, this);
+	}
+	
+	public void draw_garden(Stage window, Player player) {
+		int x = 0;
+		int y = 0;
+		
+		switch(player.getdiff()) {
+			case 1: x = 5; y = 5; break;
+			case 2: x = 10; y = 8; break;
+			case 3: x = 20; y = 8; break;
+		}
+		
+		for(int i = 0; i < y; i++) {
+			for(int j = 0; j < x; j++) {
+				if(player.get_plant(i, j) != null) {
+					this.draw_plant(window, j + 8, i + 14, player.get_plant(i, j).get_name() + player.get_plant(i, j).get_growth_level());
+				}
+			}
+		}
 	}
 }
