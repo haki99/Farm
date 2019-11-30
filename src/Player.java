@@ -5,10 +5,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Hofi
+ * @version 1.0
+ * @since   2019-11-06
+ */
 public class Player implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
@@ -17,6 +20,13 @@ public class Player implements Serializable {
 	private int a;
 	private int b;
 	
+	/**
+	 * 
+	 * @param n
+	 * @param d
+	 * @param x
+	 * @param y
+	 */
 	public void set_data(String n, int d, int x, int y) {
 		name = n;
 		diff = d;
@@ -32,41 +42,72 @@ public class Player implements Serializable {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getdiff() {
 		return diff;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getname() {
 		return name;
 	}
 	
+	/**
+	 * 
+	 * @param i
+	 * @param j
+	 * @return
+	 */
 	public Plant get_plant(int i, int j) {
 		return garden_matrix.get(i).get(j);
 	}
 	
+	/**
+	 * 
+	 * @param i
+	 * @param j
+	 */
 	public void remove_plant(int i, int j) {
 		garden_matrix.get(i).set(j, null);
 	}
 	
+	/**
+	 * 
+	 * @param p
+	 * @param i
+	 * @param j
+	 */
 	public void add_plant(Plant p, int i, int j) {
 		garden_matrix.get(i).set(j, p);
 	}
 	
+	/**
+	 * 
+	 */
 	public void grow_plants() {
 		for(int i = 0; i < a; i++) {
 			for(int j = 0; j < b; j++) {
 				if(garden_matrix.get(i).get(j) != null) {
 					if(this.get_plant(i, j).get_growth_level() < this.get_plant(i, j).get_maxgrowth()) {
 						this.get_plant(i, j).grow();
-						//for tests
-						//this.write_array();
 					}
 				}
 			}
 		}
 	}
 	
-	public void check_grow(Stage window, Enviroment e) {
+	/**
+	 * 
+	 * @param window
+	 * @param e
+	 */
+	public void check_grow(Stage window, Environment e) {
 		for(int i = 0; i < a; i++) {
 			for(int j = 0; j < b; j++) {
 				if(garden_matrix.get(i).get(j) != null) {
@@ -93,6 +134,9 @@ public class Player implements Serializable {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void save() {
 		try {
 			FileOutputStream fos = new FileOutputStream("farm_save");
@@ -106,7 +150,10 @@ public class Player implements Serializable {
 		}
 	}
 	
-	//for tests
+
+	/**
+	* 
+	*/
 	public void write_array() {
 		for(int i = 0; i < a; i++) {
 			for(int j = 0; j < b; j++) {
@@ -118,6 +165,9 @@ public class Player implements Serializable {
 		System.out.println();
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -130,6 +180,9 @@ public class Player implements Serializable {
 		return result;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

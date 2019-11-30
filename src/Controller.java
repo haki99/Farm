@@ -1,9 +1,6 @@
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.ColumnConstraints;
@@ -13,9 +10,23 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
+/**
+ * 
+ * @author Hofi
+ * @version 1.0
+ * @since   2019-11-06
+ */
 public class Controller {
-	public GridPane garden(Player player, int x, int y, Enviroment enviroment, Stage window, GraphicsContext gc, Group root, Canvas canvas) {
+	/** Makes the garden clickable, and sets the ContextMenu for the player. The player with this can plant and harvest.
+	 * 
+	 * @param player to use the players data
+	 * @param x the first tiles position
+	 * @param y the first tiles position
+	 * @param environment with this can the function draw elements
+	 * @param window the actual used window
+	 * @return returns the gridpane which is drawed to the screen
+	 */
+	public GridPane garden(Player player, int x, int y, Environment environment, Stage window) {
 		
 		x += 8;
 		y += 14;
@@ -57,7 +68,7 @@ public class Controller {
                		
                 			String type = "paradicsom1";
                 		
-                			enviroment.draw_plant(window, a, b, type);
+                			environment.draw_plant(window, a, b, type);
                 		
                 			Plant p = new Plant("paradicsom", 5, 4);
                 		
@@ -79,8 +90,8 @@ public class Controller {
             					case 3: l = 20; k = 8; break;
             				}
             				
-            				enviroment.draw_soil(window, player, l, k);
-            				enviroment.draw_garden(window, player);
+            				environment.draw_soil(window, player, l, k);
+            				environment.draw_garden(window, player);
             			});
             		}
             		
@@ -93,7 +104,13 @@ public class Controller {
 		return kert;
 	}
 	
-	public void growcycle(Player player, Stage window, Enviroment e) {
+	/**The cycle whcih grows the plants and increase their growth level
+	 * 
+	 * @param player to use the players data
+	 * @param window the actual window
+	 * @param e the used environment
+	 */
+	public void growcycle(Player player, Stage window, Environment e) {
 		
 		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
 			

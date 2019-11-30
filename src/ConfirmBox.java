@@ -6,9 +6,21 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Hofi
+ * @version 1.0
+ * @since   2019-11-06
+ */
 public class ConfirmBox {
 	static boolean answer;
 	
+	/**Create a ConfirmBox to close the program
+	 * 
+	 * @param title the title of the Box
+	 * @param message the message which appears inside the box
+	 * @return return itself
+	 */
 	public static boolean display(String title, String message) {
 		Stage window = new Stage();
 		window.initModality(Modality.APPLICATION_MODAL);

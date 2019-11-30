@@ -23,10 +23,25 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
+/**
+ * 
+ * @author Hofi
+ * @version 1.0
+ * @since   2019-11-06
+ */
 public class Displayer {
 	private Stage window;
 	private Player player;
 	
+	/**
+	 * Initialize and creates the window. Add title, icon to it and
+	 * sets the size and align of the window.
+	 * 
+	 * On close request calls the closeProgram function
+	 * 
+	 * @param PrimaryStage gets the actual stage
+	 * @param p the player
+	 */
 	public void initialize(Stage PrimaryStage, Player p) {
 		Image traktor = new Image("Data/Pics/traktor.gif");
 		
@@ -46,6 +61,10 @@ public class Displayer {
         });
 	}
 
+	/**
+	 * Draws the main menu's background and add 3 button to it.
+	 * Sets the actions of the buttons.
+	 */
 	public void Main_Menu() {
     	
 		Button Bplay = new Button("Játék");
@@ -91,6 +110,9 @@ public class Displayer {
         window.show();
 	}
 	
+	/**
+	 * In case of load, it loads the players data from the 'farm_save' named file.
+	 */
 	public void load() {
 		try
         {
@@ -123,20 +145,29 @@ public class Displayer {
 			case 3: x = 20; y = 8; break;
 		}
 		
-	    Enviroment enviroment  = new Enviroment();
-	    enviroment.initialize(window);
-		enviroment.draw_enviroment(window);	
-		enviroment.draw_soil(window, player, x, y);
-		enviroment.smart_garden(player, x, y, enviroment, window);
-		enviroment.draw_garden(window, player);
+	    Environment environment  = new Environment();
+	    environment.initialize(window);
+		environment.draw_enviroment(window);	
+		environment.draw_soil(window, player, x, y);
+		environment.smart_garden(player, x, y, environment, window);
+		environment.draw_garden(window, player);
 	}
 	
+	/**
+	 * It closes the program, and shuts down the javafx.
+	 */
 	public void closeProgram() {
     	Boolean answer = ConfirmBox.display("Vigyázat!", "Biztos ki akarsz lépni? \nA játékállás mentésre kerül.");
     	player.save();
     	if(answer) window.close();
     }
 	
+	/**
+	 * Draws the setup game menu, and add an observable list to it to set the difficulty of the game, a text field
+	 * to write the players name and 2 button.
+	 * 
+	 * @return Scene
+	 */
 	public Scene Setup_Game() {
 		ObservableList<String> difficulty = FXCollections.observableArrayList("Könnyû","Közepes","Nehéz");	
 		ComboBox<String> diff_ch = new ComboBox<String>(difficulty);
@@ -190,6 +221,9 @@ public class Displayer {
 		return sgame;
 	}
 	
+	/**
+	 * Calls the environment class to draw the ingame textures.
+	 */
 	public void Game_display() {
 		int x = 0;
 		int y = 0;
@@ -200,10 +234,10 @@ public class Displayer {
 			case 3: x = 20; y = 8; break;
 		}
 		
-	    Enviroment enviroment  = new Enviroment();
-	    enviroment.initialize(window);
-		enviroment.draw_enviroment(window);	
-		enviroment.draw_soil(window, player, x, y);
-		enviroment.smart_garden(player, x, y, enviroment, window);
+	    Environment environment  = new Environment();
+	    environment.initialize(window);
+		environment.draw_enviroment(window);	
+		environment.draw_soil(window, player, x, y);
+		environment.smart_garden(player, x, y, environment, window);
 	}
 }

@@ -8,11 +8,21 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class Enviroment {
+/**
+ * 
+ * @author Hofi
+ * @version 1.0
+ * @since   2019-11-06
+ */
+public class Environment {
 	private GraphicsContext gc;
 	private Canvas canvas;
 	private Group root;
 	
+	/**Initialize the environment and sets the drawing canvas and graphichs context
+	 * 
+	 * @param window get the actual window to draw on it
+	 */
 	public void initialize(Stage window) {
 		root = new Group();
         canvas = new Canvas(1200, 800);
@@ -24,6 +34,10 @@ public class Enviroment {
         window.setScene(ingame);
 	}
 	
+	/**Loads the picture and draws the statics on the screen.
+	 * 
+	 * @param window get the actual window to draw on it
+	 */
 	public void draw_enviroment(Stage window) {    
         
         Image sand = new Image("Data/Pics/Enviroment/Sand/sand.png");
@@ -113,7 +127,7 @@ public class Enviroment {
         for(int i = 0; i < 12; i++) {
         	gc.drawImage(sand, 0 + i * 32, 288);
         }
-        
+
         for(int i = 0; i < 8; i++) {
         	gc.drawImage(sand, 0 + i * 32, 320);
         }
@@ -199,6 +213,13 @@ public class Enviroment {
 	    window.show();
 	}
 	
+	/**Draws the garden which size is depends on the players difficulty choice
+	 * 
+	 * @param window get the actual window to draw on it
+	 * @param player gets the player to use its data for the gardens size
+	 * @param x the top left x pos
+	 * @param y the top left y pos
+	 */
 	public void draw_soil(Stage window, Player player, int x, int y) {
 		Image soil_top_left = new Image("Data/Pics/Enviroment/Garden/soil_top_left.png");
 		Image soil_top_right = new Image("Data/Pics/Enviroment/Garden/soil_top_right.png");
@@ -247,6 +268,13 @@ public class Enviroment {
 		}
 	}
 	
+	/**Draw a selected plant in the given position
+	 * 
+	 * @param window get the actual window to draw on it
+	 * @param a the x pos for the plant
+	 * @param b the y pos for the plant
+	 * @param type what type of plant to draw
+	 */
 	public void draw_plant(Stage window, int a, int b, String type) {
 		String url = "";
 		switch(type) {
@@ -270,14 +298,27 @@ public class Enviroment {
         window.show();
 	}
 	
-	public void smart_garden(Player player, int x, int y, Enviroment enviroment, Stage window) {
+	/**This function calls the controller class functions
+	 * 
+	 * @param player to use the players data
+	 * @param x the position of the first tile
+	 * @param y the position of the first tile
+	 * @param environment with this can the controller class call to draw
+	 * @param window get the actual window to draw on it
+	 */
+	public void smart_garden(Player player, int x, int y, Environment environment, Stage window) {
 		Controller controller = new Controller();
-		GridPane kert = controller.garden(player, x, y, enviroment, window, gc, root, canvas);
+		GridPane kert = controller.garden(player, x, y, environment, window);
 		root.getChildren().addAll(kert);
 		
 		controller.growcycle(player, window, this);
 	}
 	
+	/**Redraw the garden by the players stored data
+	 * 
+	 * @param window get the actual window to draw on it
+	 * @param player to use the players data
+	 */
 	public void draw_garden(Stage window, Player player) {
 		int x = 0;
 		int y = 0;
