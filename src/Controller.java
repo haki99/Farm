@@ -33,7 +33,7 @@ public class Controller {
 
 		GridPane kert = new GridPane();
 		
-		//segéd mátrix
+		//segÃ©d matrix
 		kert.setGridLinesVisible(false);
 		
 		for (int i = 0; i < 37; i++) {
@@ -47,9 +47,10 @@ public class Controller {
 	     }
 		
 		ContextMenu menu = new ContextMenu();
-        MenuItem par_ultetes_menu = new MenuItem("Paradicsom ültetés");
-        MenuItem aratas = new MenuItem("Aratás");
-        menu.getItems().addAll(par_ultetes_menu, aratas);
+        MenuItem par_ultetes_menu = new MenuItem("Paradicsom Ã¼ltetÃ©s");
+		MenuItem kuk_ultetes_menu = new MenuItem("Kukorica Ã¼ltetÃ©s");
+        MenuItem aratas = new MenuItem("AratÃ¡s");
+        menu.getItems().addAll(par_ultetes_menu, kuk_ultetes_menu, aratas);
 		
 		for (int i = 8 ; i < x ; i++) {
             for (int j = 14; j < y; j++) {
@@ -74,6 +75,16 @@ public class Controller {
                 		
                 			player.add_plant(p, z, u);
                 		});
+						kuk_ultetes_menu.setOnAction(evt -> {
+
+							String type = "kukorica1";
+
+							environment.draw_plant(window, a, b, type);
+
+							Plant p = new Plant("kukorica", 5, 4);
+
+							player.add_plant(p, z, u);
+						});
             		}
             		else if(player.get_plant(z, u).get_growth_level() == player.get_plant(z, u).get_maxgrowth()){
             			aratas.setOnAction(evt -> {
@@ -104,7 +115,7 @@ public class Controller {
 		return kert;
 	}
 	
-	/**The cycle whcih grows the plants and increase their growth level
+	/**The cycle which grows the plants and increase their growth level
 	 * 
 	 * @param player to use the players data
 	 * @param window the actual window

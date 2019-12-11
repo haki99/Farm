@@ -1,27 +1,21 @@
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  * 
@@ -43,7 +37,7 @@ public class Displayer {
 	 * @param p the player
 	 */
 	public void initialize(Stage PrimaryStage, Player p) {
-		Image traktor = new Image("Data/Pics/traktor.gif");
+		Image traktor = new Image(getClass().getResource("/Pics/traktor.gif").toExternalForm());
 		
 		player = p;
 		window = PrimaryStage;
@@ -67,9 +61,12 @@ public class Displayer {
 	 */
 	public void Main_Menu() {
     	
-		Button Bplay = new Button("Játék");
-		Button Bload = new Button("Betöltés");
-    	Button Bexit = new Button("Kilépés");
+		Button Bplay = new Button("JÃ¡tÃ©k");
+		Bplay.setId("Bplay");
+		Button Bload = new Button("BetÃ¶ltÃ©s");
+		Bload.setId("Bload");
+    	Button Bexit = new Button("KilÃ©pÃ©s");
+		Bexit.setId("Bexit");
 		
 		Bplay.setOnAction(new EventHandler<ActionEvent>(){
             public void handle(ActionEvent t){
@@ -97,7 +94,7 @@ public class Displayer {
     	
     	BackgroundSize bsize = new BackgroundSize(1504, 1000, false, false, false, false);
     	
-        BackgroundImage myBI= new BackgroundImage(new Image("Data/Pics/main_background.jpg"),
+        BackgroundImage myBI= new BackgroundImage(new Image(getClass().getResource("Pics/main_background.jpg").toExternalForm()),
             BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, bsize);
         main.setBackground(new Background(myBI));
     	
@@ -120,7 +117,7 @@ public class Displayer {
             ObjectInputStream ois = new ObjectInputStream(fis);
  
             player = (Player) ois.readObject();
- 
+
             ois.close();
             fis.close();
         } 
@@ -135,6 +132,8 @@ public class Displayer {
             c.printStackTrace();
             return;
         }
+
+		player.grow_since();
 		
 		int x = 0;
 		int y = 0;
@@ -157,7 +156,7 @@ public class Displayer {
 	 * It closes the program, and shuts down the javafx.
 	 */
 	public void closeProgram() {
-    	Boolean answer = ConfirmBox.display("Vigyázat!", "Biztos ki akarsz lépni? \nA játékállás mentésre kerül.");
+    	Boolean answer = ConfirmBox.display("VigyÃ¡zat!", "Biztos ki akarsz lÃ©pni? \nA jÃ¡tÃ©kÃ¡llÃ¡s mentÃ©sre kerÃ¼l.");
     	player.save();
     	if(answer) window.close();
     }
@@ -169,15 +168,19 @@ public class Displayer {
 	 * @return Scene
 	 */
 	public Scene Setup_Game() {
-		ObservableList<String> difficulty = FXCollections.observableArrayList("Könnyû","Közepes","Nehéz");	
+		ObservableList<String> difficulty = FXCollections.observableArrayList("KÃ¶nnyÅ±","KÃ¶zepes","NehÃ©z");
 		ComboBox<String> diff_ch = new ComboBox<String>(difficulty);
+		diff_ch.setId("diff");
 		
-		Label label1 = new Label("Név:");
+		Label label1 = new Label("NÃ©v:");
 		TextField textField = new TextField ();
+		textField.setId("textField");
 		textField.setMaxWidth(200);
 		
 		Button Bback = new Button("Vissza");
-		Button Bstart = new Button("Játék");
+		Button Bstart = new Button("JÃ¡tÃ©k");
+		Bstart.setId("Bstart");
+		Bback.setId("Bback");
 		
 		Bback.setOnAction((event) -> {
 			Main_Menu();
@@ -188,9 +191,9 @@ public class Displayer {
 			int a = 0;
 			int b = 0;
 			switch(diff_ch.getValue()) {
-				case "Könnyû": x = 1; a = 5; b = 5; break;
-				case "Közepes": x = 2; a = 10; b = 8;  break;
-				case "Nehéz": x = 3; a = 20; b = 8;  break;
+				case "KÃ¶nnyÅ±": x = 1; a = 5; b = 5; break;
+				case "KÃ¶zepes": x = 2; a = 10; b = 8;  break;
+				case "NehÃ©z": x = 3; a = 20; b = 8;  break;
 				default: break;
 			}
 			
@@ -212,7 +215,7 @@ public class Displayer {
 		
 		BackgroundSize bsize = new BackgroundSize(1504, 1000, false, false, false, false);
     	
-        BackgroundImage myBI= new BackgroundImage(new Image("Data/Pics/main_background.jpg"),
+        BackgroundImage myBI= new BackgroundImage(new Image(getClass().getResource("Pics/main_background.jpg").toExternalForm()),
             BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, bsize);
         
         setup_game.setBackground(new Background(myBI));		
